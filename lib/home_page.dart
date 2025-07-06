@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
+      body: SizedBox(
         width: width,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -36,13 +36,13 @@ class _HomePageState extends State<HomePage> {
                 onPressed: (){
                   context.read<ContainerProvider>().increaseHeight();
                 },
-                child: Text("+")
+                child: const Text("+")
             ),
             ElevatedButton(
                 onPressed: (){
                   context.read<ContainerProvider>().decreaseHeight();
                 },
-                child: Text("-")
+                child: const Text("-")
             ),
           ],
         ),
