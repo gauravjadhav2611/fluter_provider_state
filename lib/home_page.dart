@@ -10,7 +10,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  double? containerHeight = 100;
+  double? containerHeight = 100.0;
+  ValueNotifier<double> containerWidth = ValueNotifier(100.0);
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +26,84 @@ class _HomePageState extends State<HomePage> {
           children: [
             Consumer<ContainerProvider>(
                 builder: (context,heightProvider,child){
-                  return Container(
-                    height: heightProvider.containerHeight,
-                    width: 100,
-                    color: Colors.red,
+                  return ValueListenableBuilder(
+                    valueListenable: containerWidth,
+                    builder: (context, widthProvider, child){
+                      return Container(
+                        height: heightProvider.containerHeight,
+                        width: widthProvider,
+                        color: Colors.red,
+                      );
+                    },
                   );
                 }
             ),
-            ElevatedButton(
-                onPressed: (){
-                  context.read<ContainerProvider>().increaseHeight();
-                },
-                child: const Text("+")
+            const SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    onPressed: (){
+                      context.read<ContainerProvider>().increaseHeight();
+                    },
+                    child: const Text("Increase Height")
+                ),
+                ElevatedButton(
+                    onPressed: (){
+                      context.read<ContainerProvider>().decreaseHeight();
+                    },
+                    child: const Text("Decrease Height")
+                ),
+              ],
             ),
+            const SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    onPressed: (){
+                      increaseWidth();
+                    },
+                    child: const Text("Increase Width")
+                ),
+                ElevatedButton(
+                    onPressed: (){
+                      decreaseWidth();
+                    },
+                    child: const Text("Decrease Width")
+                ),
+              ],
+            ),
+            const SizedBox(height: 10,),
+
             ElevatedButton(
                 onPressed: (){
-                  context.read<ContainerProvider>().decreaseHeight();
+                  context.read<ContainerProvider>().resetHeight();
+                  resetWidth();
                 },
-                child: const Text("-")
+                child: const Text("Reset")
             ),
           ],
         ),
       ),
     );
+  }
 
+  increaseWidth(){
+    if(containerWidth.value !< 300){
+      containerWidth.value += 10;
+    }
+  }
+
+  decreaseWidth(){
+    if(containerWidth.value !> 10){
+      containerWidth.value -= 10;
+    }
+  }
+
+  resetWidth(){
+    containerWidth.value = 100.0;
   }
 }

@@ -18,4 +18,9 @@ class ContainerProvider extends ChangeNotifier{
     }
     notifyListeners();
   }
+
+  resetHeight(){
+    containerHeight = 100.0;
+    notifyListeners();
+  }
 }
